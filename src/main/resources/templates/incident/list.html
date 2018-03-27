@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Permanent+Marker" rel="stylesheet">
+
+  <title>InciDashboard</title>
+</head>
+<body>
+  <div class="page-header">
+    <div class="jumbotron bg">
+      <div class=" page-header text-white text-center">
+        <nav th:replace="../fragments/nav"></nav>
+          <p class="display-3">Incidents list</p>
+
+      </div>
+
+    </div>
+  </div>
+
+<!-->Listing of the incidents in the database</!-->
+    <div class="container p-5">
+      <div class="d-flex flex-row flex-wrap">
+
+      			<div th:if="${!#lists.isEmpty(postsList)}"  th:each="post : ${postsList}" class="card m-2 bg-light rounded" style="width: 18rem;">
+      			  <div class="card-body">
+      			    <h5 th:text="${post.title}" class="card-header mb-2"></h5>
+      			    <h6 th:text="${'@' + post.user.username}" class="card-subtitle mb-2"></h6>
+      			    <p th:text="${post.body}" class="card-text"></p>
+
+      			  </div>
+      			</div>
+            
+      		</div>
+
+    </div>
+
+</body>
+</html>

@@ -21,10 +21,10 @@ public class IncidentController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/incidents", method = RequestMethod.GET)
+	@RequestMapping(value = "/incident/list", method = RequestMethod.GET)
 	public String getDashboard(Model model) {
 		List<Incident> incidents = incidentsService.getAllIncidents();
 		model.addAttribute("incidentsList", incidents);
-		return "incidents";
+		return "incident/list";
 	}
 }
