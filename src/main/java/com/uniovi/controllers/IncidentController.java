@@ -21,7 +21,7 @@ public class IncidentController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/incident/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/dashboard/list", method = RequestMethod.GET)
 	public String getDashboard(Model model) {
 		List<Incident> incidents = incidentsService.getAllIncidents();
 		model.addAttribute("incidentsList", incidents);

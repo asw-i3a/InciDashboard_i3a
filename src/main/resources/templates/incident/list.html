@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../../css/style.css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat|Permanent+Marker" rel="stylesheet">
-
-  <title>InciDashboard</title>
-</head>
+<head th:replace="fragments/head"></head>
 <body>
   <div class="page-header">
     <div class="jumbotron bg">
@@ -26,14 +17,26 @@
     <div class="container p-5">
       <div class="d-flex flex-row flex-wrap">
 
-      			<div th:if="${!#lists.isEmpty(postsList)}"  th:each="post : ${postsList}" class="card m-2 bg-light rounded" style="width: 18rem;">
+      			<div th:if="${!#lists.isEmpty(incidents)}"  th:each="post : ${incidents}" class="card m-2 bg-light rounded" style="width: 18rem;">
       			  <div class="card-body">
-      			    <h5 th:text="${post.title}" class="card-header mb-2"></h5>
-      			    <h6 th:text="${'@' + post.user.username}" class="card-subtitle mb-2"></h6>
-      			    <p th:text="${post.body}" class="card-text"></p>
+      			    <h5 th:text="${incident.name}" class="card-header mb-2"></h5>
+      			    <h6 th:text="${incident.agent}" class="card-subtitle mb-2"></h6>
+      			    <p th:text="${post.description}" class="card-text"></p>
+      			    <button class="btn btn-primary">See in a map</button>
 
       			  </div>
       			</div>
+      			
+    			<div  class="card m-2 bg-light rounded" style="width: 18rem;">
+      			  <div class="card-body">
+      			    <h5 th:text="Fire" class="card-header mb-2"></h5>
+      			    <h6 th:text="Alberto Pérez" class="card-subtitle mb-2"></h6>
+      			    <p th:text="There was an incredibly big fire in Houston, Texas, near the main police station" class="card-text"></p>
+      			    <button class="btn btn-primary">See in a map</button>
+
+      			  </div>
+      			</div>
+      			
             
       		</div>
 
