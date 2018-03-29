@@ -14,7 +14,7 @@
 			<li class="nav-item active"><a class="nav-link" href="/">Home</a>
 			</li>
 
-			<li class="nav-item dropdown"><a
+			<li sec:authorize="isAuthenticated()" class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="/dashboard/list"
 				id="incidentsDropDown" role="button" data-toggle="dropdown"
 				aria-haspopup="true" aria-expanded="false"> Incidents </a>
@@ -26,10 +26,10 @@
             <a class="dropdown-item" href="#">Something else here</a>
           -->
 				</div></li>
-			<li id="login" class="nav-item"><a class="nav-link" href="/login">Login</a>
+			<li sec:authorize="!isAuthenticated()" id="login" class="nav-item"><a class="nav-link" href="/login">Login</a>
 			</li>
 
-			<li id="logout" class="nav-item"><a class="nav-link" href="/logout">Logout</a>
+			<li sec:authorize="isAuthenticated()" id="logout" class="nav-item"><a class="nav-link" href="/logout">Logout</a>
 			</li>
 
 		</ul>

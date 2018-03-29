@@ -16,10 +16,7 @@ public class IncidentController {
 	@Autowired
 	private IncidentsService incidentsService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String getLogin() {
-		return "login";
-	}
+
 
 	@RequestMapping(value = "/dashboard/list", method = RequestMethod.GET)
 	public String getDashboard(Model model) {

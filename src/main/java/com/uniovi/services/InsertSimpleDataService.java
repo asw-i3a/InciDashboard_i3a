@@ -16,7 +16,7 @@ import com.uniovi.entitites.IncidentStates;
 import com.uniovi.entitites.Notification;
 import com.uniovi.entitites.Operator;
 
-@Service
+//@Service
 public class InsertSimpleDataService {
 
 	@Autowired
@@ -35,8 +35,12 @@ public class InsertSimpleDataService {
 	public void init() {
 
 		// OPERADORES
-		Operator op1 = new Operator("pepe", "123456", new HashSet<>());
-		Operator op2 = new Operator("juan", "asdfgh", new HashSet<>());
+//		Operator op1 = new Operator("pepe", "123456", new HashSet<>());
+//		Operator op2 = new Operator("juan", "asdfgh", new HashSet<>());
+
+
+		Operator op1 = new Operator("patricio", "123456", new HashSet<>());
+		Operator op2 = new Operator("juanjo", "asdfgh", new HashSet<>());
 
 		operatorServ.add(op1);
 		operatorServ.add(op2);

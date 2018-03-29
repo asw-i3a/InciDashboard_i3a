@@ -1,8 +1,12 @@
 package com.uniovi.services;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.uniovi.entitites.Incident;
@@ -26,4 +30,9 @@ public class IncidentsService {
 		return incidentsRepository.findAll();
 	}
 
+	public Page<Incident> listAllIncidents(Pageable pageable){
+		Page<Incident> incidents = new PageImpl<Incident>(new LinkedList<Incident>());
+		incidents = this.incidentsRepository.findAll(pageable);
+		return incidents;
+	}
 }

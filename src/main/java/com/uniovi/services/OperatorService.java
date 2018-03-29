@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.uniovi.entitites.Operator;
@@ -14,6 +15,10 @@ public class OperatorService {
 
 	@Autowired
 	private OperatorRepository operatorRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
+
 
 	public List<Operator> getAll() {
 		return operatorRepository.findAll();
@@ -25,6 +30,7 @@ public class OperatorService {
 	}
 
 	public void add(Operator op) {
+		op.setPassword(bcrypt.encode(op.getPassword()));
 		operatorRepository.save(op);
 	}
 
