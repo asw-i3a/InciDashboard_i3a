@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.uniovi.entitites.Incident;
 import com.uniovi.entitites.Operator;
+import com.uniovi.repository.IncidentsRepository;
 import com.uniovi.repository.OperatorRepository;
 
 @Service
@@ -15,14 +17,18 @@ public class OperatorService {
 
 	@Autowired
 	private OperatorRepository operatorRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 
 
+	@Autowired
+	private IncidentsRepository incidentsRepository;
+
+	
+
 	public List<Operator> getAll() {
 		return operatorRepository.findAll();
-
 	}
 
 	public Operator getOperatorByEmail(String email) {
@@ -36,7 +42,7 @@ public class OperatorService {
 
 	/**
 	 * This method selects a random operator from all the existing ones
-	 * 
+	 *
 	 * @return the operator
 	 */
 	public Operator getRandomOperator() {
@@ -47,5 +53,13 @@ public class OperatorService {
 			return ops.get(randomNum);
 		}
 		return null;
+	}
+
+	public List<Incident> getIncidents(Operator activeUser) {
+		return incidentsRepository.findByOperator(activeUser);
+	}
+
+	public void deleteAll() {
+		operatorRepository.deleteAll();
 	}
 }

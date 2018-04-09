@@ -17,4 +17,8 @@ public class AgentsService {
 		this.agentsRepository.save(agent);
 	}
 
+	public void deleteAll() {
+		agentsRepository.deleteAll();
+	}
+
 }
