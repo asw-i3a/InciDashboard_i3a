@@ -44,8 +44,7 @@ public class IncidentsService {
 		incidents = this.incidentsRepository.findAll(pageable);
 		return incidents;
 	}
-	public Optional<Incident> getIncident(ObjectId id) {
-		return incidentsRepository.findById(id);
+
 
 	public Incident getIncident(ObjectId id) {
 		if (id != null) {
