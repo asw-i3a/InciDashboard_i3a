@@ -16,7 +16,7 @@ import com.uniovi.entitites.IncidentStates;
 import com.uniovi.entitites.Notification;
 import com.uniovi.entitites.Operator;
 
-@Service
+//@Service
 public class InsertSimpleDataService {
 
 	@Autowired
@@ -34,9 +34,18 @@ public class InsertSimpleDataService {
 	@PostConstruct
 	public void init() {
 
+		operatorServ.deleteAll();
+		incidentServ.deleteAll();
+		agentsServ.deleteAll();
+		notificationServ.deleteAll();
+		
 		// OPERADORES
-		Operator op1 = new Operator("pepe", "123456", new HashSet<>());
-		Operator op2 = new Operator("juan", "asdfgh", new HashSet<>());
+//		Operator op1 = new Operator("pepe", "123456", new HashSet<>());
+//		Operator op2 = new Operator("juan", "asdfgh", new HashSet<>());
+
+
+		Operator op1 = new Operator("patricio", "123456", new HashSet<>());
+		Operator op2 = new Operator("juanjo", "asdfgh", new HashSet<>());
 
 		operatorServ.add(op1);
 		operatorServ.add(op2);
@@ -47,6 +56,8 @@ public class InsertSimpleDataService {
 		Incident i1 = new Incident("Incidente en carretera", "Multiples heridos", IncidentStates.OPEN, "56N89W",
 				new ArrayList<>(), new ArrayList<>(), properties);
 
+		i1.setOperator(op1);
+		
 		properties.remove("wounded");
 		properties.put("temperature", "41.3");
 		Incident i2 = new Incident("Sensor de temperatura 1234", "Temperatura elevada", IncidentStates.OPEN,

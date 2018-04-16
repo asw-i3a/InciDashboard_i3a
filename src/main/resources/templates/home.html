@@ -1,39 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../css/style.css">
-	<link href="https://fonts.googleapis.com/css?family=Montserrat|Permanent+Marker" rel="stylesheet">
+<head th:replace="fragments/head"></head>
 
-  <title>InciDashboard</title>
-</head>
 <body>
-  <div class="page-header">
-    <div class="jumbotron bg">
-      <div class=" page-header text-white text-center">
-        <nav th:replace="../fragments/nav"></nav>
-					<div class="container">
-	          <p class="display-3 lead">Welcome to InciDashboard!</p>
-						<button class="btn btn-primary">Login</button>
+	<nav th:replace="fragments/nav"></nav>
+	<div class="page-header">
+		<div class="jumbotron bg">
+			<div class=" page-header text-white text-center">
+				<div class="container">
+					<div th:if="${operator}">
+						<p th:text="${'Welcome, ' + operator.email + '!'}" class="display-3 lead"></p>
+
 					</div>
-      </div>
-    </div>
 
+					<div th:if="${operator == null}">
+						<p   class="display-3 lead">Welcome to InciDashboard!</p>
+						<a th:if="${operator == null}" href="/login" class="btn btn-primary">Login</a>
 
-  </div>
+					</div>
 
-			<div class="container p-5">
-				<p class="display-5 text-black">
-					Want to be up to date with the latest incidents that took place recently? You are in the perfect place for this, welcome to the InciDashboard.
-				</p>
-
-				<p class="display-5 text-black">
-					Here you will be able to check the latest incidents in the world, and, if you are a opearator, you can login and check you personal assignations regarding incidents.
-				</p>
-
+				</div>
 			</div>
+		</div>
+
+
+	</div>
+
+	<div sec:authorize="!isAuthenticated()" class="container p-5">
+		<p class="display-5 text-black">Want to be up to date with the
+			latest incidents that took place recently? You are in the perfect
+			place for this, welcome to the InciDashboard.</p>
+
+		<p class="display-5 text-black">Here you will be able to check the
+			latest incidents in the world, and, if you are a opearator, you can
+			login and check you personal assignations regarding incidents.</p>
+
+	</div>
+
+
+		<div sec:authorize="isAuthenticated()" class="container p-5">
+		<p class="display-5 text-black">Start browsing the incidents by clicking on the Incidents tab on the navbar</p>
+
+
+	</div>
+
+
 </body>
 </html>
