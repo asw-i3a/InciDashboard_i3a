@@ -18,13 +18,10 @@ public interface IncidentsRepository extends MongoRepository<Incident, ObjectId>
 
 	public Page<Incident> findAll(Pageable page);
 	@Query("{ 'id': ?0 }'")
-	public Incident findById(String id);
+	public Incident findByIncidentId(String id);
 
 	public List<Incident> findAll();
 
 	public List<Incident> findByOperator(Operator activeUser);
-
-	@Query("{ 'operator.email': ?0 }'")
-	public List<Incident> findIncidentsOf(String email);
 
 }

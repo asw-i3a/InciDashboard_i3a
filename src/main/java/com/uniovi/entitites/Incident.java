@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Transient;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -43,7 +41,6 @@ public class Incident {
 
 	private Map<String, String> property_value;
 
-	@Transient
 	private List<Property> properties;
 
 	private List<String> comments;
@@ -150,6 +147,10 @@ public class Incident {
 		return id;
 	}
 
+	public List<Property> getProperties() {
+		return properties;
+	}
+
 	public void setId(ObjectId id) {
 		this.id = id;
 	}
@@ -187,6 +188,24 @@ public class Incident {
 	}
 
 	@Override
+	public String toString() {
+		return "Incident [id=" + id + ", name=" + name + ", description=" + description + ", state=" + state
+				+ ", location=" + location + ", tags=" + tags + ", multimedia=" + multimedia + ", property_value="
+				+ property_value + ", comments=" + comments + ", agent=" + agent + ", notification=" + notification
+				+ "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -195,7 +214,10 @@ public class Incident {
 		if (getClass() != obj.getClass())
 			return false;
 		Incident other = (Incident) obj;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (location == null) {
 			if (other.location != null)
@@ -210,49 +232,41 @@ public class Incident {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Incident [id=" + id + ", name=" + name + ", description=" + description + ", state=" + state
-				+ ", location=" + location + ", tags=" + tags + ", multimedia=" + multimedia + ", property_value="
-				+ property_value + ", comments=" + comments + ", agent=" + agent + ", notification=" + notification
-				+ "]";
-	}
-
 	public void setProperties() {
 		this.properties = new ArrayList<Property>();
 		if (property_value.containsKey("temperature")) {
 			try {
 				properties.add(new Temperature(Double.parseDouble(property_value.get("temperature"))));
 			} catch (NumberFormatException e) {
-				System.out.println("Wrong value for temperature");
+				throw new NumberFormatException("Wrong value for temperature");
 			}
 		}
 		if (property_value.containsKey("humidity")) {
 			try {
 				properties.add(new Humidity(Double.parseDouble(property_value.get("humidity"))));
 			} catch (NumberFormatException e) {
-				System.out.println("Wrong value for humidity");
+				throw new NumberFormatException("Wrong value for humidity");
 			}
 		}
 		if (property_value.containsKey("wind")) {
 			try {
 				properties.add(new Wind(Double.parseDouble(property_value.get("wind"))));
 			} catch (NumberFormatException e) {
-				System.out.println("Wrong value for humidity");
+				throw new NumberFormatException("Wrong value for wind");
 			}
 		}
 		if (property_value.containsKey("wounded")) {
 			try {
 				properties.add(new Wounded(Integer.parseInt(property_value.get("wounded"))));
 			} catch (NumberFormatException e) {
-				System.out.println("Wrong value for number of wounded people");
+				throw new NumberFormatException("Wrong value for number of wounded people");
 			}
 		}
 		if (property_value.containsKey("dead")) {
 			try {
 				properties.add(new Dead(Integer.parseInt(property_value.get("dead"))));
 			} catch (NumberFormatException e) {
-				System.out.println("Wrong value for temperature");
+				throw new NumberFormatException("Wrong value for dead people");
 			}
 		}
 		if (property_value.containsKey("fire")) {

@@ -5,11 +5,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.junit.Test;
 
+import com.uniovi.entitites.Agent;
 import com.uniovi.entitites.Incident;
 import com.uniovi.entitites.IncidentStates;
 import com.uniovi.entitites.Notification;
@@ -121,5 +124,121 @@ public class IncidentTest {
 		} catch (IllegalArgumentException e) {
 			assertTrue(e.getMessage().equals("The state cannot be null"));
 		}
+	}
+
+	@Test
+	public void extraTest() {
+		Incident i = new Incident("Accidente", "Pruebaaa", IncidentStates.OPEN, "41N56E", new ArrayList<>(),
+				new ArrayList<>(), new HashMap<>(), new ArrayList<>());
+		assertTrue(i.getTags().isEmpty());
+		assertTrue(i.getMultimedia().isEmpty());
+		i.getMultimedia().add("foto.png");
+		assertFalse(i.getMultimedia().isEmpty());
+		i.setMultimedia(new ArrayList<>());
+		assertTrue(i.getMultimedia().isEmpty());
+		assertTrue(i.getAgent() == null);
+		i.setAgent(new Agent());
+		assertFalse(i.getAgent() == null);
+
+		i.getComments().add("hello");
+		assertFalse(i.getComments().isEmpty());
+		i.setComments(new ArrayList<>());
+		assertTrue(i.getComments().isEmpty());
+		assertTrue(i.getProperties() == null);
+	}
+
+	@Test
+	public void propertiesTest() {
+		Incident i = new Incident("Incidente de prueba", "Pruebaaa", IncidentStates.OPEN, "41N56E", new ArrayList<>(),
+				new ArrayList<>(), new HashMap<>());
+		try {
+			i.getProperty_value().put("temperature", "notADouble");
+			i.hasNormalValues();
+		} catch (NumberFormatException e) {
+			assertTrue(e.getMessage().equals("Wrong value for temperature"));
+		}
+
+		i.getProperty_value().clear();
+		try {
+			i.getProperty_value().put("humidity", "notADouble");
+			i.hasNormalValues();
+		} catch (NumberFormatException e) {
+			assertTrue(e.getMessage().equals("Wrong value for humidity"));
+		}
+		i.getProperty_value().clear();
+
+		try {
+			i.getProperty_value().put("wind", "notADouble");
+			i.hasNormalValues();
+		} catch (NumberFormatException e) {
+			assertTrue(e.getMessage().equals("Wrong value for wind"));
+		}
+
+		i.getProperty_value().clear();
+		try {
+			i.getProperty_value().put("wounded", "notANumber");
+			i.hasNormalValues();
+		} catch (NumberFormatException e) {
+			assertTrue(e.getMessage().equals("Wrong value for number of wounded people"));
+		}
+		i.getProperty_value().clear();
+
+		try {
+			i.getProperty_value().put("dead", "notANumber");
+			i.hasNormalValues();
+		} catch (NumberFormatException e) {
+			assertTrue(e.getMessage().equals("Wrong value for dead people"));
+		}
+
+		i.getProperty_value().clear();
+
+		i.getProperty_value().put("attack", "true");
+		assertFalse(i.hasNormalValues());
+		i.getProperty_value().put("attack", "false");
+		assertTrue(i.hasNormalValues());
+		i.getProperty_value().put("robbery", "true");
+		assertFalse(i.hasNormalValues());
+
+		i.getProperty_value().clear();
+		i.getProperty_value().put("dead", "2");
+		assertFalse(i.hasNormalValues());
+
+		i.getProperty_value().clear();
+		i.getProperty_value().put("wounded", "3");
+		assertFalse(i.hasNormalValues());
+
+		i.getProperty_value().clear();
+		i.getProperty_value().put("humidity", "37.5");
+		assertTrue(i.hasNormalValues());
+
+		i.getProperty_value().clear();
+		i.getProperty_value().put("wind", "20.9");
+		assertTrue(i.hasNormalValues());
+	}
+
+	@Test
+	public void testEquals() {
+		Incident in = new Incident();
+		Incident in2 = null;
+
+		assertFalse(in.equals(in2));
+		assertFalse(in.equals(new Object()));
+
+		in2 = new Incident();
+		in2.setId(new ObjectId());
+		assertFalse(in.equals(in2));
+
+		in.setId(new ObjectId(new Date()));
+		assertFalse(in.equals(in2));
+
+		in2.setLocation("41N56W");
+		assertFalse(in.equals(in2));
+
+		in2.setName("Prueba");
+		assertFalse(in.equals(in2));
+
+		in.setName("No son iguales");
+		assertFalse(in.equals(in2));
+
 	}
 }

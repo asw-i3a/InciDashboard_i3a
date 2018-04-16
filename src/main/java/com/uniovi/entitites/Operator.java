@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "operators")
-// @Entity
 public class Operator {
 
 	@Id
@@ -63,6 +62,14 @@ public class Operator {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setId(ObjectId id) {
+		this.id = id;
 	}
 
 	@Override

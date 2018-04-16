@@ -21,4 +21,8 @@ public class AgentsService {
 		agentsRepository.deleteAll();
 	}
 
+	public void deleteAgent(Agent agent) {
+		this.agentsRepository.delete(agent);
+	}
+
 }
