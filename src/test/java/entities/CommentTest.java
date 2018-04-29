@@ -23,11 +23,18 @@ public class CommentTest {
 		assertFalse(aux.equals(comment));
 		aux.setComment(comment.getComment());
 		aux.setOperatorId(comment.getOperatorId());
-		assertTrue(aux.equals(comment));
 		aux.setDate(comment.getDate());
 		assertTrue(aux.equals(comment));
 
 		assertTrue(aux.hashCode() == comment.hashCode());
+
+		assertTrue(comment.toString().equals("Comment [comment=Prueba, operatorId=235b]"));
+
+		aux = new Comment();
+		assertNull(aux.getComment());
+		assertNull(aux.getDate());
+		assertNull(aux.getOperatorId());
+
 	}
 
 }
