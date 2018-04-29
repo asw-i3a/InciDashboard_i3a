@@ -1,74 +1,79 @@
 package com.uniovi.controllers;
 
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONException;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.uniovi.entitites.Incident;
-import com.uniovi.entitites.Operator;
-import com.uniovi.services.IncidentsService;
-import com.uniovi.services.OperatorService;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.uniovi.client.IncidentService;
+import com.uniovi.client.OperatorService;
+import com.uniovi.entitites.UserInfo;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class OperatorController {
 
-	@Autowired
-	private OperatorService operatorService;
-
-	@Autowired
-	private IncidentsService incidentsService;
-
-	@RequestMapping("/login")
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getLogin() {
 		return "login";
 	}
 
-	@RequestMapping("/operator/details/{id}")
-	public String getDetail(Model model, @PathVariable ObjectId id) {
-		model.addAttribute("incident", incidentsService.getIncident(id));
-		return "operator/details";
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String getLoginAux() {
+		return "login";
 	}
 
-	@RequestMapping("/operator/list")
-	public String getIncidentsList(Model model) {
-		if (getActiveUser() != null) {
-			model.addAttribute("indicentsList", incidentsService.getIncidentsOfOperator(getActiveUser().getEmail()));
-			return "operator/list";
-		} else {
-			return "login";
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String setLogin(@ModelAttribute("UserInfo") UserInfo values, HttpServletResponse response) {
+		HttpResponse<JsonNode> authenticationResponse = OperatorService.authenticate(values.getLogin(),
+				values.getPassword());
+		log.info("Login attemp with :" + values + " and result : " + authenticationResponse.getStatusText());
+		if (authenticationResponse.getStatus() == org.springframework.http.HttpStatus.OK.value()) {
+			try {
+				Cookie operatorId = new Cookie("operatorId",
+						(String) authenticationResponse.getBody().getObject().get("operatorId"));
+				operatorId.setMaxAge(1000);
+				response.addCookie(operatorId);
+				log.info("Cookie added to the response");
+			} catch (JSONException e) {
+				log.info("Failure creating the cookie in the login process");
+				e.printStackTrace();
+			}
+			log.info("Login successful, redirecting to indicents...");
+			return "redirect:/incidents";
 		}
+		log.info("Login failure, redirecting to login...");
+		return "redirect:/login";
 	}
 
-	@RequestMapping(value = "/operator/edit/{id}")
-	public String getEdit(Model model, @PathVariable ObjectId id) {
-		Incident incident = incidentsService.getIncident(id);
-		model.addAttribute("incident", incident);
-		return "operator/edit";
+	@RequestMapping("/operator/listMyIncidents")
+	public String getMyIncidentsList(Model model, @Nullable @CookieValue("operatorId") String opId) {
+		if (opId == null)
+			return "redirect:/login";
+		model.addAttribute("incidents", IncidentService.getInProcessIncidentsOfOperator(opId));
+		log.info("Redirecting to the incidents of the operator");
+		return "operator/incidents";
 	}
 
-	@RequestMapping(value = "/operator/edit/{id}", method = RequestMethod.POST)
-	public String setEdit(Model model, @PathVariable ObjectId id, @ModelAttribute Incident incident) {
-		Incident original = incidentsService.getIncident(id);
-		original.setState(incident.getState());
-		original.addComment(incident.getComments().get(0));
-		incidentsService.addIncident(original);
-		return "redirect:/operator/details/" + id;
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(@Nullable @CookieValue("operatorId") String opId, HttpServletResponse response) {
+		if (opId == null)
+			return "redirect:/login";
+		Cookie agentC = new Cookie("operatorId", opId);
+		agentC.setMaxAge(0);
+		response.addCookie(agentC);
+		log.info("Logout and redirecting to the login page");
+		return "redirect:/";
 	}
-
-	private Operator getActiveUser() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {
-			String username = auth.getName();
-			return operatorService.getOperatorByEmail(username);
-		}
-		return null;
-	}
-
 }

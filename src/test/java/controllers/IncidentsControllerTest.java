@@ -38,12 +38,6 @@ public class IncidentsControllerTest {
 	@Test
 	public void testIncis() throws Exception {
 		MockHttpServletRequestBuilder request = get("/incidents").session(session);
-		mockMvc.perform(request).andExpect(view().name("incidents"));
-	}
-
-	@Test
-	public void testDashboard() throws Exception {
-		MockHttpServletRequestBuilder request = get("/dashboard").session(session);
-		mockMvc.perform(request).andExpect(view().name("operator/incidentsSocket"));
+		mockMvc.perform(request).andExpect(view().name("redirect:/login"));
 	}
 }
