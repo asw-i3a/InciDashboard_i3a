@@ -1,42 +1,32 @@
 package io.github.asw.i3a.operatorsWebClient.entities;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
-import java.util.Date;
-
-import org.bson.types.ObjectId;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import TestKit.UnitTest;
 import io.github.asw.i3a.operatorsWebClient.entitites.Operator;
+import pl.pojo.tester.api.assertion.Method;
 
+@Category(UnitTest.class)
 public class OperatorTest {
 
-	private Operator operator;
+	@Test
+	public void allPropertiesTest() {
+		assertPojoMethodsFor(Operator.class).testing(Method.GETTER, Method.SETTER, Method.EQUALS, Method.HASH_CODE,
+				Method.TO_STRING, Method.CONSTRUCTOR).areWellImplemented();
+	}
 
 	@Test
-	public void test() {
-		assertNull(operator);
-		operator = new Operator("paco", "1234");
-		assertTrue(operator.getEmail().equals("paco"));
-		assertTrue(operator.getPassword().equals("1234"));
+	public void extraTest() {
+		Operator op = new Operator("Pepe@gmail.com", "123456");
+		assertTrue(op.getEmail().equals("Pepe@gmail.com"));
+		assertTrue(op.getPassword().equals("123456"));
 
-		Operator aux = new Operator("pepe", "asdf");
-		assertFalse(aux.equals(operator));
-		assertFalse(aux.hashCode() == operator.hashCode());
-
-		aux.setEmail(operator.getEmail());
-		aux.setPassword(operator.getPassword());
-
-		assertTrue(aux.equals(operator));
-		assertTrue(aux.hashCode() == operator.hashCode());
-
-		assertTrue(operator.getId() == null);
-		operator.setId(new ObjectId(new Date()));
-		assertFalse(operator.getId() == null);
-
-		assertTrue(operator.toString().equals("Operator [email=paco, password=1234]"));
-
+		Operator op2 = new Operator();
+		assertTrue(op.canEquals(op2));
 	}
+
 }

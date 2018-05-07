@@ -1,39 +1,32 @@
 package io.github.asw.i3a.operatorsWebClient.entities;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import TestKit.UnitTest;
 import io.github.asw.i3a.operatorsWebClient.entitites.InciInfo;
+import pl.pojo.tester.api.assertion.Method;
 
+@Category(UnitTest.class)
 public class InciInfoTest {
 
-	private InciInfo inci;
+	@Test
+	public void allPropertiesTest() {
+		assertPojoMethodsFor(InciInfo.class).testing(Method.GETTER, Method.SETTER, Method.EQUALS, Method.HASH_CODE,
+				Method.TO_STRING, Method.CONSTRUCTOR).areWellImplemented();
+	}
 
 	@Test
-	public void test() {
-		assertNull(inci);
-		inci = new InciInfo();
-		assertNotNull(inci);
-		assertTrue(inci.getComment() == null);
-		assertTrue(inci.getStatus() == null);
-		inci.setComment("comentario");
-		inci.setStatus("OPEN");
-		assertTrue(inci.getComment() == "comentario");
-		assertTrue(inci.getStatus() == "OPEN");
+	public void extraTest() {
+		InciInfo in = new InciInfo("OPEN", "pruebaa");
+		assertTrue(in.getStatus().equals("OPEN"));
+		assertTrue(in.getComment().equals("pruebaa"));
 
-		InciInfo aux = new InciInfo();
-		assertFalse(aux.equals(inci));
-		aux.setComment(inci.getComment());
-		assertFalse(aux.equals(inci));
-		aux.setStatus(inci.getStatus());
-		assertTrue(aux.equals(inci));
-		assertTrue(aux.hashCode() == inci.hashCode());
-
-		assertTrue(inci.toString().equals("InciInfo(status=OPEN, comment=comentario)"));
+		InciInfo in2 = new InciInfo();
+		assertTrue(in.canEquals(in2));
 	}
 
 }

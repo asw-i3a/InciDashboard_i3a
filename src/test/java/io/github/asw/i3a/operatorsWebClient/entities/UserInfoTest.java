@@ -1,35 +1,31 @@
 package io.github.asw.i3a.operatorsWebClient.entities;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import TestKit.UnitTest;
 import io.github.asw.i3a.operatorsWebClient.entitites.UserInfo;
+import pl.pojo.tester.api.assertion.Method;
 
+@Category(UnitTest.class)
 public class UserInfoTest {
 
-	private UserInfo user;
+	@Test
+	public void allPropertiesTest() {
+		assertPojoMethodsFor(UserInfo.class).testing(Method.GETTER, Method.SETTER, Method.EQUALS, Method.HASH_CODE,
+				Method.TO_STRING, Method.CONSTRUCTOR).areWellImplemented();
+	}
 
 	@Test
-	public void test() {
-		assertNull(user);
-		user = new UserInfo("paco", "1234");
-		assertNotNull(user);
-		assertTrue(user.getLogin().equals("paco"));
-		assertTrue(user.getPassword().equals("1234"));
-
-		UserInfo aux = new UserInfo("pepe", "asdfg");
-		assertFalse(aux.equals(user));
-		aux.setLogin(user.getLogin());
-		assertFalse(aux.equals(user));
-		aux.setPassword(user.getPassword());
-		assertTrue(aux.equals(user));
-		assertTrue(aux.hashCode() == user.hashCode());
-
-		assertTrue(user.toString().equals("UserInfo(login=paco, password=1234)"));
+	public void textExtra() {
+		UserInfo u = new UserInfo("hola", "holi");
+		assertTrue(u.getLogin().equals("hola"));
+		assertTrue(u.getPassword().equals("holi"));
+		UserInfo u2 = new UserInfo();
+		assertTrue(u.canEquals(u2));
 	}
 
 }
