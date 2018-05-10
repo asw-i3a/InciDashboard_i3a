@@ -1,22 +1,27 @@
-[![Build Status](https://travis-ci.org/Arquisoft/InciDashboard_i3a.svg?branch=master)](https://travis-ci.org/Arquisoft/InciDashboard_i3a)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/27b04e16c41248d0abad6d5a4ce83911)](https://www.codacy.com/app/jelabra/InciDashboard_i3a?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Arquisoft/Loader_i3a&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/Arquisoft/InciDashboard_i3a/branch/master/graph/badge.svg)](https://codecov.io/gh/Arquisoft/InciDashboard_i3a)
+# I3A Operators Web Client
 
-# InciDashboard_i3a
+| | **Status** |
+|---|:----|
+| **travis ci** |[![Build Status](https://travis-ci.org/Arquisoft/InciDashboard_i3a.svg?branch=master)](https://travis-ci.org/Arquisoft/InciDashboard_i3a)
+| **code coverage** |[![codecov](https://codecov.io/gh/Arquisoft/InciDashboard_i3a/branch/master/graph/badge.svg)](https://codecov.io/gh/Arquisoft/InciDashboard_i3a)
+| **code quality** |[![Codacy Badge](https://api.codacy.com/project/badge/Grade/27b04e16c41248d0abad6d5a4ce83911)](https://www.codacy.com/app/jelabra/InciDashboard_i3a?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Arquisoft/Loader_i3a&amp;utm_campaign=Badge_Grade)
+| **latest build** |-
 
-InciDashboard module
-
-# Information
+This client forms part of platform called GestUsers, if you don't know about it, we encourage you to see this other [repo](https://github.com/asw-i3a/project-documentation) first.
 
 This module allows Operators to enter the application and manage all th eincidents they have assigned due to being dangerous. They can also add comments to them, and change the state of those incidents.
 The application also allows them to monitorize and see statistics of all of them.
 
+### Package
+|Group|Artifact|
+|-----|--------|
+|io.github.asw.i3a|operators.web.service|
 
-# Authors
+### Authors
 
-* [Elena Allegue González](https://github.com/eleallegue)
-* [Anamaria Cotorei](https://github.com/UO251547)
-* [Cristina Vena Naredo](https://github.com/cristinavn)
+- [Elena Allegue González](https://github.com/eleallegue)
+- [Anamaria Cotorei](https://github.com/UO251547)
+- [Cristina Vena Naredo](https://github.com/cristinavn)
 
 # Running the application 
 There are two ways:
